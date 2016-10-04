@@ -250,8 +250,12 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Calculator\Calculator.csproj">
+      <Project>{8ba7e0e7-aa9f-4b5a-a614-7eb98a0fc213}</Project>
+      <Name>Calculator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Calc\Calc.csproj">
-      <Project>{b0b598a1-19e5-4780-9346-f5005501d635}</Project>
+      <Project>{893c4c18-5834-41b8-ab48-9bb8eb6b80d5}</Project>
       <Name>Calc</Name>
     </ProjectReference>
   </ItemGroup>

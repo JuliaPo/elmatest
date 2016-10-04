@@ -1,19 +1,17 @@
 ﻿using Calc;
-using CalcHistory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using History;
 
-//Skype ava_var
-namespace Calculator
+namespace WindowsFormsApplication1
 {
     public partial class formCalculator : Form
     {
@@ -23,15 +21,13 @@ namespace Calculator
 
         private HistoryManager Writer { get; set; }
 
-
         public formCalculator()
         {
             InitializeComponent();
             Calc = new Helper();
             Writer = new HistoryManager();
-
             // получить все методы с Calc
-            var methods = Calc.GetType().GetMethods(BindingFlags.DeclaredOnly | BindingFlags.CreateInstance | BindingFlags.Public);
+            var methods = Calc.GetType().GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
             // ЦИКЛ по методам
             var count = 0;
             this.panel1.SuspendLayout();
@@ -42,18 +38,9 @@ namespace Calculator
                 //m.Name;
             }
             this.panel1.ResumeLayout();
-
-
-            //проверяем историю
-            if (File.Exists(@"C:/calcLog.txt"))
-            {
-                string[] tempHistory = Writer.ReadHistory().ToArray();
-                for(int i = 0; i <tempHistory.Count(); i++)
-                {
-                    rtbHistory.Text += tempHistory[i] + Environment.NewLine;
-                }
-            }
+            rtbHistory.Text = Writer.ReadHistory();
         }
+
         private void CreateRadioButton(string Name, int index)
         {
             var rbBtn = new RadioButton();
@@ -74,6 +61,94 @@ namespace Calculator
         }
 
 
+        private void btnCalc_Click(object sender, EventArgs e)
+        {
+            int x = 0;
+            int y = 0;
+
+            //валидность текстбоксов
+            bool xIsValid = true;
+            bool yIsValid = true;
+
+            //отлавливаем некорректный ввод параметров
+            try
+            {
+                x = int.Parse(txtX.Text);
+            }
+
+            catch
+            {
+                xIsValid = false;
+            }
+
+            try
+            {
+                y = int.Parse(txtY.Text);
+            }
+
+            catch
+            {
+                yIsValid = false;
+            }
+
+
+            //magic
+
+            var calcType = Calc.GetType();
+            string currentLine = "";
+            txtX.ForeColor = Color.Black;
+            txtY.ForeColor = Color.Black;
+            if (ActiveOperation != null)
+            {
+                var method = calcType.GetMethod(ActiveOperation);
+
+                //текущая строка в истории
+                var result = method.Invoke(Calc, new object[] { x, y });
+
+                lblResult.Text = result.ToString();
+
+                //без ошибок
+                if (yIsValid && xIsValid)
+                {
+                    currentLine = string.Format("{0} {1} {2} = {3}\n", x, ActiveOperation, y, result);
+                    rtbHistory.Text += currentLine;
+                }
+                //x и y не int
+                else if (!yIsValid && !xIsValid)
+                {
+                    currentLine = string.Format("ERROR: X and Y are not valid\n");
+                    rtbHistory.Text += currentLine;
+                    txtX.ForeColor = Color.HotPink;
+                    txtY.ForeColor = Color.HotPink;
+                    lblResult.Text = "";
+                }
+                else
+                {
+                    if (xIsValid)
+                    {
+                        txtY.ForeColor = Color.HotPink;
+                        currentLine = "ERROR: Y is not valid\n";
+                        rtbHistory.Text += currentLine;
+                        lblResult.Text = "";
+                    }
+                    else
+                    {
+                        txtX.ForeColor = Color.HotPink;
+                        currentLine = "ERROR: X is not valid\n";
+                        rtbHistory.Text += currentLine;
+                        lblResult.Text = "";
+                    }
+                }
+                this.Writer.WriteHistory(currentLine);
+            } else
+            {
+                currentLine = string.Format("ERROR: Choose the operation firstly\n");
+                rtbHistory.Text += currentLine;
+                this.Writer.WriteHistory(currentLine);
+            }
+        }
+
+
         private void radio_CheckedChanged(object sender, EventArgs e)
         {
             var rb = sender as RadioButton;
@@ -82,82 +157,6 @@ namespace Calculator
                 return;
             }
             ActiveOperation = rb.Tag.ToString();
-        }
-
-        private void btnCalc_Click_1(object sender, EventArgs e)
-        {
-
-            int x = 0;
-            int y = 0;
-            bool validX = true;
-            bool validY = true;
-
-            try
-            {
-                validX = true;
-                txtX.BackColor = Color.White;
-                x = int.Parse(txtX.Text);
-            }
-
-            catch (System.FormatException)
-            {
-                validX = false;
-                txtX.BackColor = Color.Coral;
-            }
-
-            try
-            {
-                validY = true;
-                txtY.BackColor = Color.White;
-                y = int.Parse(txtY.Text);
-            }
-
-            catch (System.FormatException)
-            {
-                validY = false;
-                txtY.BackColor = Color.Coral;
-            }
-
-
-            //magic
-            if (validX && validY)
-            {
-                var calcType = Calc.GetType();
-                var method = calcType.GetMethod(ActiveOperation);
-
-                var result = method.Invoke(Calc, new object[] { x, y });
-                //Calc.Sum(x, y);
-
-                lblResult.Text = result.ToString();
-
-                string currentLine = string.Format("{0} {1} {2} = {3}{4}", x, ActiveOperation, y, result, Environment.NewLine);
-                rtbHistory.Text += currentLine;
-                this.Writer.WriteHistory(currentLine);
-            } else
-            {
-                lblResult.Text = "";
-                if (!validX && !validY)
-                {
-                    string currentLine = "Values for X & Y are not valid" + Environment.NewLine;
-                    rtbHistory.Text += currentLine;
-                    this.Writer.WriteHistory(currentLine);
-                }
-                else
-                {
-                    if (!validX)
-                    {
-                        string currentLine = "Value for X is not valid" + Environment.NewLine;
-                        rtbHistory.Text += currentLine;
-                        this.Writer.WriteHistory(currentLine);
-                    }
-                    if (!validY)
-                    {
-                        string currentLine = "Value for Y is not valid" + Environment.NewLine;
-                        rtbHistory.Text += currentLine;
-                        this.Writer.WriteHistory(currentLine);
-                    }
-                }
-            }
         }
     }
 }

@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5495300F-A071-45D4-A66B-13CD15997640}</ProjectGuid>
+    <ProjectGuid>{4F2E46C7-3133-4BEB-9EAE-36ED77F1D1E6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>calc.test</RootNamespace>
-    <AssemblyName>calc.test</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>Calc.Test</RootNamespace>
+    <AssemblyName>Calc.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -54,12 +54,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\calc\calc.csproj">
-      <Project>{b5561e77-ad7e-44f8-8f22-fe3b8d4235cf}</Project>
-      <Name>calc</Name>
+    <ProjectReference Include="..\Calc\Calc.csproj">
+      <Project>{893c4c18-5834-41b8-ab48-9bb8eb6b80d5}</Project>
+      <Name>Calc</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

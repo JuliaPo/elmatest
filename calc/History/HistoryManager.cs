@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CalcHistory
+namespace History
 {
     public class HistoryManager
     {
@@ -14,19 +14,19 @@ namespace CalcHistory
             File.AppendAllText(@"C:/calcLog.txt", currentLine);
         }
 
-        public List<string> ReadHistory()
+        public string ReadHistory()
         {
-            using (StreamReader history = new StreamReader(@"C:/calcLog.txt", System.Text.Encoding.Default))
+            if (File.Exists(@"C:/calcLog.txt"))
             {
-                List<string> lines = new List<string>();
-                string line;
-                while ((line = history.ReadLine()) != null)
+                using (StreamReader history = new StreamReader(@"C:/calcLog.txt", Encoding.Default))
                 {
-                    lines.Add(line);
+                    string text;
+                    text = history.ReadToEnd();
+                    return text;
                 }
-
-                return lines;
+                
             }
+            return "";
         }
     }
 }
