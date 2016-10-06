@@ -30,8 +30,9 @@ namespace Domain.Managers
             {
                 var criteria = session.CreateCriteria(typeof(History));
 
-                //Отфильтровать данные, выбрать операцию, выбрать действие, интерфейс перепилить
-                //criteria.Add(Restrictions.Ge("X", 5));
+                //Фильтр истории
+                const string sumFilter = "Sum";
+                criteria.Add(Restrictions.Like("Operation", sumFilter, MatchMode.Anywhere));
                 var docs = criteria.List<History>();
                 return docs;
             }

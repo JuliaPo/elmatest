@@ -25,7 +25,7 @@ namespace Domain.Models
 
         [Required]
         [Display(Name = "Операция")]
-        public virtual int Result { get; set; }
+        public virtual double Result { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Дата создания")]

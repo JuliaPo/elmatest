@@ -2,7 +2,7 @@
 <hibernate-configuration  xmlns="urn:nhibernate-configuration-2.2" >
   <session-factory name="NHibernate.Test">
     <property name="connection.driver_class">NHibernate.Driver.SqlClientDriver</property>
-    <property name="connection.connection_string">Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Дима\Desktop\calc\WebCalc\App_Data\calcDB.mdf;Connect Timeout=30;User Instance=False</property>
+    <property name="connection.connection_string">Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Дима\Documents\GitHub\elmatest\WebCalc\App_Data\calcDB.mdf;Connect Timeout=30;User Instance=False</property>
     <property name="dialect">NHibernate.Dialect.MsSql2008Dialect</property>
 
     <property name="show_sql">true</property>

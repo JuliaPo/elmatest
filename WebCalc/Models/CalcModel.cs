@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
+using System.Reflection;
 
 namespace WebCalc.Models
 {
@@ -22,5 +24,9 @@ namespace WebCalc.Models
 
         [Display(Name = "Результат")]
         public double Result { get; set; }
+
+        [Required]
+        [Display(Name = "Операция")]
+        public string Operation { get; set; }
     }
 }
